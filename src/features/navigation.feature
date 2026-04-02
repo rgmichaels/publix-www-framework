@@ -4,12 +4,6 @@ Feature: Publix primary navigation
   I want the top navigation menus to open and expose valid destinations
   So that I can reach key sections quickly
 
-  Scenario Outline: Header flyout menu links are valid
+  Scenario: Header flyout menu links are valid
     Given I open the Publix homepage
-    Then the "<menuKey>" menu should expose working fixture links
-
-    Examples:
-      | menuKey     |
-      | savings     |
-      | orderAhead  |
-      | catering    |
+    Then the savings, order ahead, and catering menus should expose working fixture links

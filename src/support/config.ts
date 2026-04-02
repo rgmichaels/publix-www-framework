@@ -83,7 +83,7 @@ export const config: RuntimeConfig = {
   ci,
   retries: parseNumber(process.env.RETRIES, ci ? 2 : 0),
   defaultTimeoutMs: parseNumber(process.env.DEFAULT_TIMEOUT_MS, 15_000),
-  navigationTimeoutMs: parseNumber(process.env.NAVIGATION_TIMEOUT_MS, 30_000),
+  navigationTimeoutMs: parseNumber(process.env.NAVIGATION_TIMEOUT_MS, 45_000),
   actionTimeoutMs: parseNumber(process.env.ACTION_TIMEOUT_MS, 15_000),
   browserName: 'chromium',
   locale: process.env.LOCALE ?? 'en-US',

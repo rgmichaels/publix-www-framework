@@ -70,43 +70,63 @@ After(async function (this: CustomWorld, scenario) {
 
   if (scenario.result?.status === Status.FAILED) {
     if (config.screenshotOnFailure) {
-      const screenshotPath = path.join(
-        config.artifacts.screenshots,
-        `${baseFilename}.png`
-      );
-      await this.page.screenshot({ path: screenshotPath, fullPage: true });
-      this.scenarioArtifacts.screenshotPath = screenshotPath;
-      await this.attach(`Screenshot saved to ${screenshotPath}`);
+      try {
+        const screenshotPath = path.join(
+          config.artifacts.screenshots,
+          `${baseFilename}.png`
+        );
+        await this.page.screenshot({
+          path: screenshotPath,
+          fullPage: true,
+          timeout: config.navigationTimeoutMs
+        });
+        this.scenarioArtifacts.screenshotPath = screenshotPath;
+        await this.attach(`Screenshot saved to ${screenshotPath}`);
+      } catch (error) {
+        await this.attach(`Screenshot capture failed: ${String(error)}`);
+      }
     }
 
     if (config.htmlSnapshotOnFailure) {
-      const htmlSnapshotPath = path.join(
-        config.artifacts.snapshots,
-        `${baseFilename}.html`
-      );
-      await writeFile(htmlSnapshotPath, await this.page.content(), 'utf8');
-      this.scenarioArtifacts.htmlSnapshotPath = htmlSnapshotPath;
-      await this.attach(`HTML snapshot saved to ${htmlSnapshotPath}`);
+      try {
+        const htmlSnapshotPath = path.join(
+          config.artifacts.snapshots,
+          `${baseFilename}.html`
+        );
+        await writeFile(htmlSnapshotPath, await this.page.content(), 'utf8');
+        this.scenarioArtifacts.htmlSnapshotPath = htmlSnapshotPath;
+        await this.attach(`HTML snapshot saved to ${htmlSnapshotPath}`);
+      } catch (error) {
+        await this.attach(`HTML snapshot capture failed: ${String(error)}`);
+      }
     }
 
     if (this.consoleLogs.length > 0) {
-      const consolePath = path.join(
-        config.artifacts.console,
-        `${baseFilename}.log`
-      );
-      await writeFile(consolePath, this.consoleLogs.join('\n'), 'utf8');
-      this.scenarioArtifacts.consoleLogPath = consolePath;
-      await this.attach(this.consoleLogs.join('\n'), 'text/plain');
+      try {
+        const consolePath = path.join(
+          config.artifacts.console,
+          `${baseFilename}.log`
+        );
+        await writeFile(consolePath, this.consoleLogs.join('\n'), 'utf8');
+        this.scenarioArtifacts.consoleLogPath = consolePath;
+        await this.attach(this.consoleLogs.join('\n'), 'text/plain');
+      } catch (error) {
+        await this.attach(`Console log persistence failed: ${String(error)}`);
+      }
     }
 
     if (config.captureNetworkLogs && this.networkLogs.length > 0) {
-      const networkPath = path.join(
-        config.artifacts.network,
-        `${baseFilename}.log`
-      );
-      await writeFile(networkPath, this.networkLogs.join('\n'), 'utf8');
-      this.scenarioArtifacts.networkLogPath = networkPath;
-      await this.attach(this.networkLogs.join('\n'), 'text/plain');
+      try {
+        const networkPath = path.join(
+          config.artifacts.network,
+          `${baseFilename}.log`
+        );
+        await writeFile(networkPath, this.networkLogs.join('\n'), 'utf8');
+        this.scenarioArtifacts.networkLogPath = networkPath;
+        await this.attach(this.networkLogs.join('\n'), 'text/plain');
+      } catch (error) {
+        await this.attach(`Network log persistence failed: ${String(error)}`);
+      }
     }
   }
 

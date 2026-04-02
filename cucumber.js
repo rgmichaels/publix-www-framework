@@ -13,7 +13,6 @@ module.exports = {
     '--require-module ts-node/register',
     '--require src/support/**/*.ts',
     '--require src/steps/**/*.ts',
-    '--parallel 2',
     '--retry 2',
     '--format progress-bar',
     '--format json:artifacts/cucumber/cucumber-report.json',

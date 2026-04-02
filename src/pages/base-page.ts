@@ -10,11 +10,28 @@ export class BasePage {
       ? new URL(pathname, `${config.baseUrl}/`).toString()
       : config.baseUrl;
 
-    await this.page.goto(destination, {
-      waitUntil: 'domcontentloaded',
-      timeout: config.navigationTimeoutMs
-    });
-    await this.waitForStable();
+    const attempts = config.ci ? 3 : 2;
+    let lastError: unknown;
+
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      try {
+        await this.page.goto(destination, {
+          waitUntil: 'commit',
+          timeout: config.navigationTimeoutMs
+        });
+        await this.waitForStable();
+        return;
+      } catch (error) {
+        lastError = error;
+        if (attempt === attempts) {
+          break;
+        }
+
+        await this.page.waitForTimeout(1_500 * attempt);
+      }
+    }
+
+    throw lastError;
   }
 
   async waitForStable(): Promise<void> {

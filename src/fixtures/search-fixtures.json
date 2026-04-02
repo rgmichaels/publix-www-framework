@@ -1,0 +1,7 @@
+{
+  "sardines": {
+    "term": "sardines",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "sardines"
+  }
+}

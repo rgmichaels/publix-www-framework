@@ -1,0 +1,11 @@
+node_modules/
+artifacts/
+playwright-report/
+dist/
+.DS_Store
+*.log
+*.tmp
+.env
+.env.local
+.idea/
+.vscode/

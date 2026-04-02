@@ -1,0 +1,47 @@
+{
+  "name": "publix-www-framework",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready Playwright + Cucumber + TypeScript end-to-end automation framework for publix.com.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "clean": "node ./scripts/clean.mjs",
+    "lint": "eslint . --ext .ts,.js,.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run clean && cucumber-js",
+    "test:smoke": "npm run clean && cucumber-js --tags \"@smoke and not @wip\"",
+    "test:regression": "npm run clean && cucumber-js --tags \"@regression and not @wip\"",
+    "test:wip": "npm run clean && cucumber-js --tags \"@wip\"",
+    "test:parallel": "npm run clean && cucumber-js --parallel 2",
+    "test:ci": "npm run clean && cucumber-js --profile ci",
+    "report:html": "node ./scripts/generate-report.mjs",
+    "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run report:html"
+  },
+  "keywords": [
+    "playwright",
+    "cucumber",
+    "typescript",
+    "bdd",
+    "e2e",
+    "publix"
+  ],
+  "author": "rgmichaels",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.3.0",
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^24.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

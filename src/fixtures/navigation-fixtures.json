@@ -1,0 +1,49 @@
+{
+  "savings": {
+    "triggerLabel": "Savings",
+    "fallbackTriggerId": "navSavings",
+    "items": [
+      { "label": "Weekly ad", "expectedPath": "/savings/weekly-ad" },
+      { "label": "BOGOs", "expectedPath": "/savings/weekly-ad/bogo" },
+      {
+        "label": "Digital coupons",
+        "expectedPath": "/savings/digital-coupons"
+      },
+      { "label": "Extra savings", "expectedPath": "/savings/extra-savings" },
+      { "label": "All deals", "expectedPath": "/savings/all-deals" }
+    ]
+  },
+  "orderAhead": {
+    "triggerLabel": "Order Ahead",
+    "fallbackTriggerId": "navOrderAhead",
+    "items": [
+      {
+        "label": "Subs and more",
+        "expectedPath": "/menu-subs-and-wraps"
+      },
+      {
+        "label": "Meat and cheese",
+        "expectedPath": "/mc/order-ahead/order-deli-meat-and-cheese"
+      },
+      {
+        "label": "Bakery",
+        "expectedPath": "/mc/order-ahead/order-bakery-online"
+      }
+    ]
+  },
+  "catering": {
+    "triggerLabel": "Catering",
+    "fallbackTriggerId": "navCatering",
+    "items": [
+      { "label": "Shop all Catering", "expectedPath": "/catering" },
+      {
+        "label": "Sandwich platters",
+        "expectedPath": "/catering-menu.*sandwich-platters"
+      },
+      {
+        "label": "Appetizer platters",
+        "expectedPath": "/catering-menu.*appetizer-platters"
+      }
+    ]
+  }
+}

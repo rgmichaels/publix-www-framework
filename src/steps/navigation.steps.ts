@@ -1,6 +1,7 @@
-import { Then } from '@cucumber/cucumber';
+import { Then, When } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 
+import { HomePage } from '../pages/home-page';
 import { getNavigationMenu } from '../utils/navigation-fixture';
 import type { CustomWorld } from '../support/world';
 
@@ -35,5 +36,39 @@ Then(
     for (const menuKey of ['savings', 'orderAhead', 'catering']) {
       await assertMenuLinks(this, menuKey);
     }
+  }
+);
+
+When(
+  'I click the Weekly Ad link on the homepage',
+  async function (this: CustomWorld) {
+    if (!this.homePage) {
+      this.homePage = new HomePage(this.ensurePage());
+    }
+
+    await this.homePage.clickWeeklyAdLink();
+  }
+);
+
+Then('I should land on a weekly ad page', async function (this: CustomWorld) {
+  if (!this.homePage) {
+    throw new Error(
+      'HomePage is not initialized. Open the homepage before validating destination page.'
+    );
+  }
+
+  await this.homePage.expectWeeklyAdPage('weekly ad');
+});
+
+Then(
+  'the page should display {string} text',
+  async function (this: CustomWorld, pageText: string) {
+    if (!this.homePage) {
+      throw new Error(
+        'HomePage is not initialized. Open the homepage before validating destination page content.'
+      );
+    }
+
+    await this.homePage.expectWeeklyAdPage(pageText);
   }
 );

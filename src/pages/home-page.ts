@@ -6,6 +6,15 @@ import { locateWithFallback } from '../utils/selector-utils';
 import type { NavigationMenu } from '../utils/navigation-fixture';
 import type { VisualNavigationExpectation } from '../utils/visual-navigation-fixture';
 
+export class SeasonalVisualNavigationUnavailableError extends Error {
+  constructor(linkLabel: string) {
+    super(
+      `Visual navigation link "${linkLabel}" is unavailable in this homepage variant.`
+    );
+    this.name = 'SeasonalVisualNavigationUnavailableError';
+  }
+}
+
 export class HomePage extends BasePage {
   private lastVisualNavigationHref: string | null = null;
 
@@ -149,9 +158,16 @@ export class HomePage extends BasePage {
     const visualNavLink = this.page
       .getByRole('link', { name: new RegExp(`^${escaped}$`, 'i') })
       .first();
-    await expect(visualNavLink).toBeVisible({
-      timeout: config.actionTimeoutMs
-    });
+    try {
+      await expect(visualNavLink).toBeVisible({
+        timeout: config.actionTimeoutMs
+      });
+    } catch (error) {
+      if (/^easter meals$/i.test(linkLabel)) {
+        throw new SeasonalVisualNavigationUnavailableError(linkLabel);
+      }
+      throw error;
+    }
     this.lastVisualNavigationHref = await visualNavLink.getAttribute('href');
     await visualNavLink.click({
       force: true,

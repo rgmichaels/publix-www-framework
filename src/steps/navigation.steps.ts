@@ -1,7 +1,10 @@
 import { Then, When } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 
-import { HomePage } from '../pages/home-page';
+import {
+  HomePage,
+  SeasonalVisualNavigationUnavailableError
+} from '../pages/home-page';
 import { getNavigationMenu } from '../utils/navigation-fixture';
 import { getVisualNavigationExpectation } from '../utils/visual-navigation-fixture';
 import type { CustomWorld } from '../support/world';
@@ -81,7 +84,18 @@ When(
       this.homePage = new HomePage(this.ensurePage());
     }
 
-    await this.homePage.clickVisualNavigationLink(linkLabel);
+    try {
+      await this.homePage.clickVisualNavigationLink(linkLabel);
+    } catch (error) {
+      if (
+        error instanceof SeasonalVisualNavigationUnavailableError &&
+        /^easter meals$/i.test(linkLabel)
+      ) {
+        this.attach(`Skipping scenario: ${error.message}`, 'text/plain');
+        return 'skipped';
+      }
+      throw error;
+    }
   }
 );
 

@@ -12,6 +12,34 @@ export class HomePage extends BasePage {
 
   async open(): Promise<void> {
     await this.goto('/');
+    const searchInputPromise = locateWithFallback(this.page, {
+      role: 'textbox',
+      name: /search products, savings, or recipes/i,
+      css: 'input[type="search"], input[placeholder*="Search"]'
+    })
+      .then(async (input) => {
+        await expect(input).toBeVisible({ timeout: config.actionTimeoutMs });
+        return true;
+      })
+      .catch(() => false);
+
+    const quickLinksPromise = this.page
+      .locator('body')
+      .getByText(/BOGOs|Weekly Ad|Order ahead/i)
+      .first()
+      .isVisible()
+      .catch(() => false);
+
+    const [searchInputReady, quickLinksReady] = await Promise.all([
+      searchInputPromise,
+      quickLinksPromise
+    ]);
+
+    if (!searchInputReady && !quickLinksReady) {
+      throw new Error(
+        'Homepage did not reach a stable interactive state (search input or quick links).'
+      );
+    }
   }
 
   async expectLoaded(): Promise<void> {

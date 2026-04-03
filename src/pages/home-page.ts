@@ -120,6 +120,26 @@ export class HomePage extends BasePage {
     await this.waitForStable();
   }
 
+  async clickWeeklyAdLink(): Promise<void> {
+    const weeklyAdLink = this.page
+      .getByRole('link', { name: /^weekly ad$/i })
+      .first();
+    await expect(weeklyAdLink).toBeVisible({ timeout: config.actionTimeoutMs });
+    await this.clickSafe(weeklyAdLink);
+    await this.waitForStable();
+  }
+
+  async expectWeeklyAdPage(pageText: string): Promise<void> {
+    await expect(this.page).toHaveURL(/\/savings\/weekly-ad/i, {
+      timeout: config.navigationTimeoutMs
+    });
+    await expect(
+      this.page.getByText(new RegExp(pageText, 'i')).first()
+    ).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+  }
+
   async openMenu(menu: NavigationMenu): Promise<void> {
     const candidate: {
       testId?: string;

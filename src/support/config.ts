@@ -8,6 +8,9 @@ type RuntimeConfig = {
   readonly defaultTimeoutMs: number;
   readonly navigationTimeoutMs: number;
   readonly actionTimeoutMs: number;
+  readonly navigationAttempts: number;
+  readonly waitForNetworkIdle: boolean;
+  readonly networkIdleTimeoutMs: number;
   readonly browserName: 'chromium';
   readonly locale: string;
   readonly screenshotOnFailure: boolean;
@@ -83,8 +86,11 @@ export const config: RuntimeConfig = {
   ci,
   retries: parseNumber(process.env.RETRIES, ci ? 2 : 0),
   defaultTimeoutMs: parseNumber(process.env.DEFAULT_TIMEOUT_MS, 15_000),
-  navigationTimeoutMs: parseNumber(process.env.NAVIGATION_TIMEOUT_MS, 45_000),
+  navigationTimeoutMs: parseNumber(process.env.NAVIGATION_TIMEOUT_MS, 30_000),
   actionTimeoutMs: parseNumber(process.env.ACTION_TIMEOUT_MS, 15_000),
+  navigationAttempts: parseNumber(process.env.NAVIGATION_ATTEMPTS, ci ? 2 : 1),
+  waitForNetworkIdle: parseBoolean(process.env.WAIT_FOR_NETWORK_IDLE, false),
+  networkIdleTimeoutMs: parseNumber(process.env.NETWORK_IDLE_TIMEOUT_MS, 3_000),
   browserName: 'chromium',
   locale: process.env.LOCALE ?? 'en-US',
   screenshotOnFailure: parseBoolean(process.env.SCREENSHOT_ON_FAILURE, true),

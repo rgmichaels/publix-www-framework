@@ -10,7 +10,7 @@ export class BasePage {
       ? new URL(pathname, `${config.baseUrl}/`).toString()
       : config.baseUrl;
 
-    const attempts = config.ci ? 3 : 2;
+    const attempts = config.navigationAttempts;
     let lastError: unknown;
 
     for (let attempt = 1; attempt <= attempts; attempt += 1) {
@@ -36,7 +36,13 @@ export class BasePage {
 
   async waitForStable(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
-    await this.page.waitForLoadState('networkidle').catch(() => undefined);
+    if (config.waitForNetworkIdle) {
+      await this.page
+        .waitForLoadState('networkidle', {
+          timeout: config.networkIdleTimeoutMs
+        })
+        .catch(() => undefined);
+    }
   }
 
   async clickSafe(locator: Locator): Promise<void> {

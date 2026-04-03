@@ -3,6 +3,7 @@ import { expect } from '@playwright/test';
 
 import { HomePage } from '../pages/home-page';
 import { getNavigationMenu } from '../utils/navigation-fixture';
+import { getVisualNavigationExpectation } from '../utils/visual-navigation-fixture';
 import type { CustomWorld } from '../support/world';
 
 const assertMenuLinks = async (
@@ -70,5 +71,30 @@ Then(
     }
 
     await this.homePage.expectWeeklyAdPage(pageText);
+  }
+);
+
+When(
+  'I click the {string} visual navigation link on the homepage',
+  async function (this: CustomWorld, linkLabel: string) {
+    if (!this.homePage) {
+      this.homePage = new HomePage(this.ensurePage());
+    }
+
+    await this.homePage.clickVisualNavigationLink(linkLabel);
+  }
+);
+
+Then(
+  'the {string} visual navigation destination should load',
+  async function (this: CustomWorld, linkLabel: string) {
+    if (!this.homePage) {
+      throw new Error(
+        'HomePage is not initialized. Open the homepage before validating visual navigation.'
+      );
+    }
+
+    const expectation = getVisualNavigationExpectation(linkLabel);
+    await this.homePage.expectVisualNavigationDestination(expectation);
   }
 );

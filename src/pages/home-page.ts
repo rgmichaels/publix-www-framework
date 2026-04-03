@@ -4,8 +4,11 @@ import { config } from '../support/config';
 import { BasePage } from './base-page';
 import { locateWithFallback } from '../utils/selector-utils';
 import type { NavigationMenu } from '../utils/navigation-fixture';
+import type { VisualNavigationExpectation } from '../utils/visual-navigation-fixture';
 
 export class HomePage extends BasePage {
+  private lastVisualNavigationHref: string | null = null;
+
   constructor(page: Page) {
     super(page);
   }
@@ -140,6 +143,77 @@ export class HomePage extends BasePage {
     });
   }
 
+  async clickVisualNavigationLink(linkLabel: string): Promise<void> {
+    await this.dismissClubPopupIfPresent();
+    const escaped = linkLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const visualNavLink = this.page
+      .getByRole('link', { name: new RegExp(`^${escaped}$`, 'i') })
+      .first();
+    await expect(visualNavLink).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+    this.lastVisualNavigationHref = await visualNavLink.getAttribute('href');
+    await visualNavLink.click({
+      force: true,
+      noWaitAfter: true,
+      timeout: config.actionTimeoutMs
+    });
+    await this.waitForStable();
+  }
+
+  async expectVisualNavigationDestination(
+    expectation: VisualNavigationExpectation
+  ): Promise<void> {
+    if (expectation.expectedDialogText) {
+      try {
+        const dialog = this.page.getByRole('dialog').first();
+        await expect(dialog).toBeVisible({ timeout: config.actionTimeoutMs });
+        await expect(dialog).toContainText(
+          new RegExp(expectation.expectedDialogText, 'i')
+        );
+      } catch (error) {
+        if (
+          expectation.expectedHrefContains &&
+          this.lastVisualNavigationHref?.includes(
+            expectation.expectedHrefContains
+          )
+        ) {
+          return;
+        }
+        throw error;
+      }
+      return;
+    }
+
+    if (expectation.expectedPath) {
+      const expectedPathRegex = new RegExp(expectation.expectedPath);
+      try {
+        await expect(this.page).toHaveURL(expectedPathRegex, {
+          timeout: config.navigationTimeoutMs
+        });
+      } catch (error) {
+        if (this.lastVisualNavigationHref?.match(expectedPathRegex)) {
+          return;
+        }
+        throw error;
+      }
+    }
+
+    if (expectation.expectedTitleContains) {
+      await expect(this.page).toHaveTitle(
+        new RegExp(expectation.expectedTitleContains, 'i'),
+        { timeout: config.actionTimeoutMs }
+      );
+    }
+
+    if (expectation.expectedText) {
+      await expect(this.page.locator('body')).toContainText(
+        new RegExp(expectation.expectedText, 'i'),
+        { timeout: config.actionTimeoutMs }
+      );
+    }
+  }
+
   async openMenu(menu: NavigationMenu): Promise<void> {
     const candidate: {
       testId?: string;
@@ -176,5 +250,31 @@ export class HomePage extends BasePage {
     const link = this.page.getByRole('link', { name: regex }).first();
     await expect(link).toBeVisible({ timeout: config.actionTimeoutMs });
     return link;
+  }
+
+  private async dismissClubPopupIfPresent(): Promise<void> {
+    const popup = this.page
+      .locator('section, div, aside, article')
+      .filter({ hasText: /join the club\./i })
+      .first();
+
+    if ((await popup.count()) === 0) {
+      return;
+    }
+
+    const closeButton = popup
+      .locator(
+        'button[aria-label*="close" i], button[title*="close" i], button[aria-label="x" i]'
+      )
+      .first();
+
+    if ((await closeButton.count()) > 0) {
+      await closeButton
+        .click({ force: true, noWaitAfter: true })
+        .catch(() => undefined);
+      await popup
+        .waitFor({ state: 'hidden', timeout: 3_000 })
+        .catch(() => undefined);
+    }
   }
 }

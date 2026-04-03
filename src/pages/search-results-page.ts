@@ -1,6 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 
 import { BasePage } from './base-page';
+import { escapeForRegex } from '../utils/selector-utils';
 
 export class SearchResultsPage extends BasePage {
   constructor(page: Page) {
@@ -8,9 +9,14 @@ export class SearchResultsPage extends BasePage {
   }
 
   async expectResultsFor(term: string): Promise<void> {
-    await expect(this.page).toHaveURL(/\/search/i);
+    const escapedTerm = escapeForRegex(term);
+    const encodedTermPattern = escapeForRegex(encodeURIComponent(term));
+
+    await expect(this.page).toHaveURL(
+      new RegExp(`(/search|searchtermredirect=${encodedTermPattern})`, 'i')
+    );
     await expect(this.page.locator('body')).toContainText(
-      new RegExp(term, 'i')
+      new RegExp(escapedTerm, 'i')
     );
 
     const resultCards = this.page.locator(

@@ -3,5 +3,40 @@
     "term": "sardines",
     "expectedUrlIncludes": "search",
     "expectedResultText": "sardines"
+  },
+  "iceCream": {
+    "term": "Ice Cream",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "Ice Cream"
+  },
+  "asparagus": {
+    "term": "Asparagus",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "Asparagus"
+  },
+  "banana": {
+    "term": "Banana",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "Banana"
+  },
+  "salmon": {
+    "term": "Salmon",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "Salmon"
+  },
+  "milk": {
+    "term": "Milk",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "Milk"
+  },
+  "yogurt": {
+    "term": "Yogurt",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "Yogurt"
+  },
+  "cereal": {
+    "term": "Cereal",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "Cereal"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "Easter Meals": {
+    "expectedPath": "/mc/order-ahead/easter"
+  },
+  "Subs & Wraps": {
+    "expectedPath": "/menu-subs-and-wraps"
+  },
+  "Cakes": {
+    "expectedPath": "/mc/order-ahead/order-bakery-cakes"
+  },
+  "Platters & Catering": {
+    "expectedTitleContains": "Catering Services"
+  },
+  "Sub-Style Salads": {
+    "expectedPath": "/menu-subs-and-wraps"
+  },
+  "Grocery Delivery": {
+    "expectedDialogText": "Leaving publix.com",
+    "expectedHrefContains": "InstacartRedirectModalVisualNavigation.requestOpen"
+  },
+  "Deli Meat & Cheese": {
+    "expectedPath": "/(mc/order-ahead/order-deli-meat-and-cheese|shop-online/in-store-pickup/meat-and-cheese)"
+  }
+}

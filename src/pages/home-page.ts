@@ -25,9 +25,16 @@ export class HomePage extends BasePage {
   async open(): Promise<void> {
     await this.goto('/');
     const searchInputPromise = locateWithFallback(this.page, {
-      role: 'textbox',
+      testId: 'product-search-input',
+      role: 'combobox',
       name: /search products, savings, or recipes/i,
-      css: 'input[type="search"], input[placeholder*="Search"]'
+      css: [
+        '#searchInputFlyout',
+        'input[data-qa-automation="product-search-input"]',
+        'input[name="searchTerm"]',
+        'input[type="search"]',
+        'input[placeholder*="Search"]'
+      ].join(', ')
     })
       .then(async (input) => {
         await expect(input).toBeVisible({ timeout: config.actionTimeoutMs });
@@ -122,9 +129,16 @@ export class HomePage extends BasePage {
 
   async search(term: string): Promise<void> {
     const desktopInput = await locateWithFallback(this.page, {
-      role: 'textbox',
+      testId: 'product-search-input',
+      role: 'combobox',
       name: /search products, savings, or recipes/i,
-      css: 'input[type="search"], input[placeholder*="Search"]'
+      css: [
+        '#searchInputFlyout',
+        'input[data-qa-automation="product-search-input"]',
+        'input[name="searchTerm"]',
+        'input[type="search"]',
+        'input[placeholder*="Search"]'
+      ].join(', ')
     });
 
     await desktopInput.fill(term);

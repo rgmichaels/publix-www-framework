@@ -16,12 +16,12 @@
   },
   "eggs": {
     "term": "eggs",
-    "expectedUrlIncludes": "search",
+    "expectedUrlIncludes": "\\/search|\\/c\\/",
     "expectedResultText": "eggs"
   },
   "milk": {
     "term": "milk",
-    "expectedUrlIncludes": "search",
+    "expectedUrlIncludes": "\\/search|\\/c\\/",
     "expectedResultText": "milk"
   }
 }

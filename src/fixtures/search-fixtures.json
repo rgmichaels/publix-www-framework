@@ -3,5 +3,10 @@
     "term": "sardines",
     "expectedUrlIncludes": "search",
     "expectedResultText": "sardines"
+  },
+  "chickenTenderSub": {
+    "term": "chicken tender sub",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "chicken tender sub"
   }
 }

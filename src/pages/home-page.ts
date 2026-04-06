@@ -152,6 +152,26 @@ export class HomePage extends BasePage {
     });
   }
 
+  async clickLocationsLink(): Promise<void> {
+    const locationsLink = this.page
+      .getByRole('link', { name: /^locations$/i })
+      .first();
+    await expect(locationsLink).toBeVisible({ timeout: config.actionTimeoutMs });
+    await this.clickSafe(locationsLink);
+    await this.waitForStable();
+  }
+
+  async expectLocationsPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/locations/i, {
+      timeout: config.navigationTimeoutMs
+    });
+    await expect(
+      this.page.getByRole('heading', { name: /^locations$/i }).first()
+    ).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+  }
+
   async clickVisualNavigationLink(linkLabel: string): Promise<void> {
     await this.dismissClubPopupIfPresent();
     const escaped = linkLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

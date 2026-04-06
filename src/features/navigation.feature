@@ -14,6 +14,11 @@ Feature: Publix primary navigation
     Then I should land on a weekly ad page
     And the page should display "weekly ad" text
 
+  Scenario: Locations link navigates to the locations page
+    Given I open the Publix homepage
+    When I click the Locations link on the homepage
+    Then I should land on the locations page
+
   Scenario: Easter Meals link navigates to its destination
     Given I open the Publix homepage
     When I click the "Easter Meals" visual navigation link on the homepage

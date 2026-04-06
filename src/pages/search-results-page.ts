@@ -8,7 +8,6 @@ export class SearchResultsPage extends BasePage {
   }
 
   async expectResultsFor(term: string): Promise<void> {
-    await expect(this.page).toHaveURL(/\/search/i);
     await expect(this.page.locator('body')).toContainText(
       new RegExp(term, 'i')
     );

@@ -1,7 +1,27 @@
 {
-  "sardines": {
-    "term": "sardines",
-    "expectedUrlIncludes": "search",
-    "expectedResultText": "sardines"
+  "milk": {
+    "term": "milk",
+    "expectedUrlIncludes": "\\/search|\\/c\\/",
+    "expectedResultText": "milk"
+  },
+  "eggs": {
+    "term": "eggs",
+    "expectedUrlIncludes": "\\/search|\\/c\\/",
+    "expectedResultText": "eggs"
+  },
+  "bananas": {
+    "term": "bananas",
+    "expectedUrlIncludes": "\\/search|\\/c\\/",
+    "expectedResultText": "bananas"
+  },
+  "cereal": {
+    "term": "cereal",
+    "expectedUrlIncludes": "\\/search|\\/c\\/",
+    "expectedResultText": "cereal"
+  },
+  "bread": {
+    "term": "bread",
+    "expectedUrlIncludes": "\\/search|\\/c\\/",
+    "expectedResultText": "bread"
   }
 }

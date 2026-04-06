@@ -4,7 +4,15 @@ Feature: Publix site search
   I want to search for products
   So that I can find relevant results quickly
 
-  Scenario: Search for sardines returns valid results
+  Scenario Outline: Search for common grocery items returns valid results
     Given I open the Publix homepage
-    When I search using the "sardines" search fixture
-    Then the "sardines" search results should look valid
+    When I search using the "<searchTerm>" search fixture
+    Then the "<searchTerm>" search results should look valid
+
+    Examples:
+      | searchTerm |
+      | milk       |
+      | eggs       |
+      | bananas    |
+      | cereal     |
+      | bread      |

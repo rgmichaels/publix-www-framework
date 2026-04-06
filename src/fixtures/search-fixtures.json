@@ -8,5 +8,20 @@
     "term": "chicken tender sub",
     "expectedUrlIncludes": "search",
     "expectedResultText": "chicken tender sub"
+  },
+  "banana": {
+    "term": "banana",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "banana"
+  },
+  "eggs": {
+    "term": "eggs",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "eggs"
+  },
+  "milk": {
+    "term": "milk",
+    "expectedUrlIncludes": "search",
+    "expectedResultText": "milk"
   }
 }

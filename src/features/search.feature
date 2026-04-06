@@ -6,11 +6,11 @@ Feature: Publix site search
 
   Scenario Outline: Search for fixture-backed terms returns valid results
     Given I open the Publix homepage
-    When I search using the "<fixtureKey>" search fixture
-    Then the "<fixtureKey>" search results should look valid
+    When I search using the "<searchTerm>" search fixture
+    Then the "<searchTerm>" search results should look valid
 
     Examples:
-      | fixtureKey        |
+      | searchTerm        |
       | sardines          |
       | chickenTenderSub  |
       | banana            |

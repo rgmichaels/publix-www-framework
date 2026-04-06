@@ -152,6 +152,42 @@ export class HomePage extends BasePage {
     });
   }
 
+  async clickLocationsLink(): Promise<void> {
+    const locationsLink = this.page
+      .getByRole('link', { name: /^locations$/i })
+      .first();
+    await expect(locationsLink).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+    await this.clickSafe(locationsLink);
+    await this.waitForStable();
+  }
+
+  async expectLocationsPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/locations/i, {
+      timeout: config.navigationTimeoutMs
+    });
+
+    const heading = this.page
+      .getByRole('heading', {
+        name: /locations|store locator|find.*store|find.*location/i
+      })
+      .first();
+
+    const bodySignal = this.page
+      .locator('body')
+      .getByText(/locations|store locator|find a store|zip code|city, state/i)
+      .first();
+
+    const headingVisible = await heading
+      .isVisible({ timeout: config.actionTimeoutMs })
+      .catch(() => false);
+
+    if (!headingVisible) {
+      await expect(bodySignal).toBeVisible({ timeout: config.actionTimeoutMs });
+    }
+  }
+
   async clickVisualNavigationLink(linkLabel: string): Promise<void> {
     await this.dismissClubPopupIfPresent();
     const escaped = linkLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

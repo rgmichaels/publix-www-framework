@@ -156,7 +156,9 @@ export class HomePage extends BasePage {
     const locationsLink = this.page
       .getByRole('link', { name: /^locations$/i })
       .first();
-    await expect(locationsLink).toBeVisible({ timeout: config.actionTimeoutMs });
+    await expect(locationsLink).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
     await this.clickSafe(locationsLink);
     await this.waitForStable();
   }

@@ -25,9 +25,16 @@ export class HomePage extends BasePage {
   async open(): Promise<void> {
     await this.goto('/');
     const searchInputPromise = locateWithFallback(this.page, {
-      role: 'textbox',
+      testId: 'product-search-input',
+      role: 'combobox',
       name: /search products, savings, or recipes/i,
-      css: 'input[type="search"], input[placeholder*="Search"]'
+      css: [
+        '#searchInputFlyout',
+        'input[data-qa-automation="product-search-input"]',
+        'input[name="searchTerm"]',
+        'input[type="search"]',
+        'input[placeholder*="Search"]'
+      ].join(', ')
     })
       .then(async (input) => {
         await expect(input).toBeVisible({ timeout: config.actionTimeoutMs });
@@ -122,14 +129,53 @@ export class HomePage extends BasePage {
 
   async search(term: string): Promise<void> {
     const desktopInput = await locateWithFallback(this.page, {
-      role: 'textbox',
+      testId: 'product-search-input',
+      role: 'searchbox',
       name: /search products, savings, or recipes/i,
-      css: 'input[type="search"], input[placeholder*="Search"]'
+      css: [
+        '#searchInputFlyout',
+        'input[data-qa-automation="product-search-input"]',
+        'input[name="searchTerm"]',
+        'input[type="search"]',
+        'input[placeholder*="Search"]'
+      ].join(', ')
     });
 
+    await expect(desktopInput).toBeVisible({ timeout: config.actionTimeoutMs });
+    await desktopInput.click({ timeout: config.actionTimeoutMs });
     await desktopInput.fill(term);
-    await desktopInput.press('Enter');
+
+    const enterSubmitted = await desktopInput
+      .press('Enter', { timeout: Math.min(config.actionTimeoutMs, 5_000) })
+      .then(() => true)
+      .catch(() => false);
+
+    if (!enterSubmitted) {
+      await this.page.keyboard.press('Enter').catch(() => undefined);
+
+      const submitButton = await locateWithFallback(this.page, {
+        testId: 'search-button',
+        role: 'button',
+        name: /submit search|search/i,
+        css: [
+          'button[data-qa-automation="search-button"]',
+          'form[role="search"] button[type="submit"]',
+          'button[aria-label*="search" i]',
+          '[data-qa-automation="search-trigger"]'
+        ].join(', ')
+      }).catch(() => null);
+
+      if (submitButton) {
+        await this.clickSafe(submitButton).catch(() => undefined);
+      }
+    }
+
     await this.waitForStable();
+    await this.page
+      .waitForURL(/\/search|\/c\/|searchtermredirect=/i, {
+        timeout: config.navigationTimeoutMs
+      })
+      .catch(() => undefined);
   }
 
   async clickWeeklyAdLink(): Promise<void> {

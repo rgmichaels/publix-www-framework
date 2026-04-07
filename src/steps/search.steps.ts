@@ -6,8 +6,8 @@ import type { CustomWorld } from '../support/world';
 
 When(
   'I search using the {string} search fixture',
-  async function (this: CustomWorld, fixtureKey: string) {
-    const searchCase = getSearchCase(fixtureKey);
+  async function (this: CustomWorld, searchTerm: string) {
+    const searchCase = getSearchCase(searchTerm);
     if (!this.homePage) {
       throw new Error(
         'HomePage is not initialized. Open the homepage before searching.'
@@ -21,8 +21,8 @@ When(
 
 Then(
   'the {string} search results should look valid',
-  async function (this: CustomWorld, fixtureKey: string) {
-    const searchCase = getSearchCase(fixtureKey);
+  async function (this: CustomWorld, searchTerm: string) {
+    const searchCase = getSearchCase(searchTerm);
     if (!this.searchResultsPage) {
       this.searchResultsPage = new SearchResultsPage(this.ensurePage());
     }

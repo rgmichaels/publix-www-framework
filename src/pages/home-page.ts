@@ -245,6 +245,17 @@ export class HomePage extends BasePage {
     await this.waitForStable();
   }
 
+  async clickContactUsLink(): Promise<void> {
+    const contactUsLink = this.page
+      .getByRole('link', { name: /^contact us$/i })
+      .first();
+    await expect(contactUsLink).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+    await this.clickSafe(contactUsLink);
+    await this.waitForStable();
+  }
+
   async expectPharmacyPage(): Promise<void> {
     await expect(this.page).toHaveURL(/\/pharmacy/i, {
       timeout: config.navigationTimeoutMs
@@ -266,6 +277,17 @@ export class HomePage extends BasePage {
     if (!headingVisible) {
       await expect(bodySignal).toBeVisible({ timeout: config.actionTimeoutMs });
     }
+  }
+
+  async expectContactUsPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/contact|customer-service|support/i, {
+      timeout: config.navigationTimeoutMs
+    });
+
+    const body = this.page.locator('body');
+    await expect(body).toContainText(/contact us|customer service|help/i, {
+      timeout: config.actionTimeoutMs
+    });
   }
 
   async clickVisualNavigationLink(linkLabel: string): Promise<void> {

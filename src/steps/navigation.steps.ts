@@ -101,6 +101,17 @@ When(
   }
 );
 
+When(
+  'I click the Contact Us link on the homepage',
+  async function (this: CustomWorld) {
+    if (!this.homePage) {
+      this.homePage = new HomePage(this.ensurePage());
+    }
+
+    await this.homePage.clickContactUsLink();
+  }
+);
+
 Then('I should land on a weekly ad page', async function (this: CustomWorld) {
   if (!this.homePage) {
     throw new Error(
@@ -129,6 +140,16 @@ Then('I should land on the pharmacy page', async function (this: CustomWorld) {
   }
 
   await this.homePage.expectPharmacyPage();
+});
+
+Then('I should land on a contact us page', async function (this: CustomWorld) {
+  if (!this.homePage) {
+    throw new Error(
+      'HomePage is not initialized. Open the homepage before validating destination page.'
+    );
+  }
+
+  await this.homePage.expectContactUsPage();
 });
 
 Then(

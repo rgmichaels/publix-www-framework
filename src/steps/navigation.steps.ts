@@ -112,6 +112,17 @@ When(
   }
 );
 
+When(
+  'I click the About Publix link on the homepage',
+  async function (this: CustomWorld) {
+    if (!this.homePage) {
+      this.homePage = new HomePage(this.ensurePage());
+    }
+
+    await this.homePage.clickAboutPublixLink();
+  }
+);
+
 Then('I should land on a weekly ad page', async function (this: CustomWorld) {
   if (!this.homePage) {
     throw new Error(
@@ -151,6 +162,19 @@ Then('I should land on a contact us page', async function (this: CustomWorld) {
 
   await this.homePage.expectContactUsPage();
 });
+
+Then(
+  'I should land on an about publix page',
+  async function (this: CustomWorld) {
+    if (!this.homePage) {
+      throw new Error(
+        'HomePage is not initialized. Open the homepage before validating destination page.'
+      );
+    }
+
+    await this.homePage.expectAboutPublixPage();
+  }
+);
 
 Then(
   'the page should display {string} text',

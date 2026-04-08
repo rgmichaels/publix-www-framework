@@ -34,6 +34,11 @@ Feature: Publix primary navigation
     When I click the Contact Us link on the homepage
     Then I should land on a contact us page
 
+  Scenario: About Publix link navigates to the about page
+    Given I open the Publix homepage
+    When I click the About Publix link on the homepage
+    Then I should land on an about publix page
+
   Scenario: Easter Meals link navigates to its destination
     Given I open the Publix homepage
     When I click the "Easter Meals" visual navigation link on the homepage

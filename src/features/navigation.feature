@@ -19,6 +19,11 @@ Feature: Publix primary navigation
     When I click the Locations link on the homepage
     Then I should land on the locations page
 
+  Scenario: Pharmacy link navigates to the pharmacy page
+    Given I open the Publix homepage
+    When I click the Pharmacy link on the homepage
+    Then I should land on the pharmacy page
+
   Scenario: Easter Meals link navigates to its destination
     Given I open the Publix homepage
     When I click the "Easter Meals" visual navigation link on the homepage

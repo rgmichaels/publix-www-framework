@@ -14,6 +14,11 @@ Feature: Publix primary navigation
     Then I should land on a weekly ad page
     And the page should display "weekly ad" text
 
+  Scenario: Savings digital coupons item navigates to the digital coupons page
+    Given I open the Publix homepage
+    When I click the "Digital coupons" item in the "savings" menu
+    Then I should land on the digital coupons page
+
   Scenario: Locations link navigates to the locations page
     Given I open the Publix homepage
     When I click the Locations link on the homepage

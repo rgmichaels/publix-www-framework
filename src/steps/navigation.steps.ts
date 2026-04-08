@@ -44,6 +44,31 @@ Then(
 );
 
 When(
+  'I click the {string} item in the {string} menu',
+  async function (this: CustomWorld, itemLabel: string, menuKey: string) {
+    if (!this.homePage) {
+      this.homePage = new HomePage(this.ensurePage());
+    }
+
+    const menu = getNavigationMenu(menuKey);
+    await this.homePage.clickMenuItem(menu, itemLabel);
+  }
+);
+
+Then(
+  'I should land on the digital coupons page',
+  async function (this: CustomWorld) {
+    if (!this.homePage) {
+      throw new Error(
+        'HomePage is not initialized. Open the homepage before validating destination page.'
+      );
+    }
+
+    await this.homePage.expectDigitalCouponsPage();
+  }
+);
+
+When(
   'I click the Weekly Ad link on the homepage',
   async function (this: CustomWorld) {
     if (!this.homePage) {

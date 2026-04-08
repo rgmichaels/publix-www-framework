@@ -384,6 +384,21 @@ export class HomePage extends BasePage {
     return link;
   }
 
+  async clickMenuItem(menu: NavigationMenu, itemLabel: string): Promise<void> {
+    const link = await this.menuItemLink(menu, itemLabel);
+    await this.clickSafe(link);
+    await this.waitForStable();
+  }
+
+  async expectDigitalCouponsPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/savings\/digital-coupons/i, {
+      timeout: config.navigationTimeoutMs
+    });
+    await expect(this.page.locator('body')).toContainText(/digital coupons/i, {
+      timeout: config.actionTimeoutMs
+    });
+  }
+
   private async dismissClubPopupIfPresent(): Promise<void> {
     const popup = this.page
       .locator('section, div, aside, article')

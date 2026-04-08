@@ -142,18 +142,15 @@ Then('I should land on the pharmacy page', async function (this: CustomWorld) {
   await this.homePage.expectPharmacyPage();
 });
 
-Then(
-  'I should land on a contact us page',
-  async function (this: CustomWorld) {
-    if (!this.homePage) {
-      throw new Error(
-        'HomePage is not initialized. Open the homepage before validating destination page.'
-      );
-    }
-
-    await this.homePage.expectContactUsPage();
+Then('I should land on a contact us page', async function (this: CustomWorld) {
+  if (!this.homePage) {
+    throw new Error(
+      'HomePage is not initialized. Open the homepage before validating destination page.'
+    );
   }
-);
+
+  await this.homePage.expectContactUsPage();
+});
 
 Then(
   'the page should display {string} text',

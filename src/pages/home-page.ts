@@ -234,6 +234,40 @@ export class HomePage extends BasePage {
     }
   }
 
+  async clickPharmacyLink(): Promise<void> {
+    const pharmacyLink = this.page
+      .getByRole('link', { name: /^(publix )?pharmacy$/i })
+      .first();
+    await expect(pharmacyLink).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+    await this.clickSafe(pharmacyLink);
+    await this.waitForStable();
+  }
+
+  async expectPharmacyPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/pharmacy/i, {
+      timeout: config.navigationTimeoutMs
+    });
+
+    const heading = this.page
+      .getByRole('heading', { name: /pharmacy|prescriptions/i })
+      .first();
+
+    const bodySignal = this.page
+      .locator('body')
+      .getByText(/pharmacy|prescriptions|refill/i)
+      .first();
+
+    const headingVisible = await heading
+      .isVisible({ timeout: config.actionTimeoutMs })
+      .catch(() => false);
+
+    if (!headingVisible) {
+      await expect(bodySignal).toBeVisible({ timeout: config.actionTimeoutMs });
+    }
+  }
+
   async clickVisualNavigationLink(linkLabel: string): Promise<void> {
     await this.dismissClubPopupIfPresent();
     const escaped = linkLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

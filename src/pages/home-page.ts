@@ -256,6 +256,17 @@ export class HomePage extends BasePage {
     await this.waitForStable();
   }
 
+  async clickAboutPublixLink(): Promise<void> {
+    const aboutPublixLink = this.page
+      .getByRole('link', { name: /^about publix$/i })
+      .first();
+    await expect(aboutPublixLink).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+    await this.clickSafe(aboutPublixLink);
+    await this.waitForStable();
+  }
+
   async expectPharmacyPage(): Promise<void> {
     await expect(this.page).toHaveURL(/\/pharmacy/i, {
       timeout: config.navigationTimeoutMs
@@ -288,6 +299,20 @@ export class HomePage extends BasePage {
     await expect(body).toContainText(/contact us|customer service|help/i, {
       timeout: config.actionTimeoutMs
     });
+  }
+
+  async expectAboutPublixPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/about|our-company/i, {
+      timeout: config.navigationTimeoutMs
+    });
+
+    const body = this.page.locator('body');
+    await expect(body).toContainText(
+      /about publix|our company|our story|company/i,
+      {
+        timeout: config.actionTimeoutMs
+      }
+    );
   }
 
   async clickVisualNavigationLink(linkLabel: string): Promise<void> {

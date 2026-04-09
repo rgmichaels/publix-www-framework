@@ -39,6 +39,11 @@ Feature: Publix primary navigation
     When I click the About Publix link on the homepage
     Then I should land on an about publix page
 
+  Scenario: Shop all Catering item navigates to the catering page
+    Given I open the Publix homepage
+    When I click the "Shop all Catering" item in the "catering" menu
+    Then I should land on the catering page
+
   Scenario: Easter Meals link navigates to its destination
     Given I open the Publix homepage
     When I click the "Easter Meals" visual navigation link on the homepage

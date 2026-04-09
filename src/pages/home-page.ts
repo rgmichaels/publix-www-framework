@@ -315,6 +315,17 @@ export class HomePage extends BasePage {
     );
   }
 
+  async expectCateringPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/catering/i, {
+      timeout: config.navigationTimeoutMs
+    });
+
+    const body = this.page.locator('body');
+    await expect(body).toContainText(/catering|platters|party/i, {
+      timeout: config.actionTimeoutMs
+    });
+  }
+
   async clickVisualNavigationLink(linkLabel: string): Promise<void> {
     await this.dismissClubPopupIfPresent();
     const escaped = linkLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

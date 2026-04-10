@@ -187,6 +187,19 @@ Then('I should land on the catering page', async function (this: CustomWorld) {
 });
 
 Then(
+  'I should land on the order ahead subs and more page',
+  async function (this: CustomWorld) {
+    if (!this.homePage) {
+      throw new Error(
+        'HomePage is not initialized. Open the homepage before validating destination page.'
+      );
+    }
+
+    await this.homePage.expectOrderAheadSubsAndMorePage();
+  }
+);
+
+Then(
   'the page should display {string} text',
   async function (this: CustomWorld, pageText: string) {
     if (!this.homePage) {

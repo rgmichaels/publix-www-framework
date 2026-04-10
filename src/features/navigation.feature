@@ -44,6 +44,11 @@ Feature: Publix primary navigation
     When I click the "Shop all Catering" item in the "catering" menu
     Then I should land on the catering page
 
+  Scenario: Subs and more item navigates to the order ahead page
+    Given I open the Publix homepage
+    When I click the "Subs and more" item in the "orderAhead" menu
+    Then I should land on the order ahead subs and more page
+
   Scenario: Easter Meals link navigates to its destination
     Given I open the Publix homepage
     When I click the "Easter Meals" visual navigation link on the homepage

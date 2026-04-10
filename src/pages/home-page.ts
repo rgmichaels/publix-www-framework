@@ -326,6 +326,17 @@ export class HomePage extends BasePage {
     });
   }
 
+  async expectOrderAheadSubsAndMorePage(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/menu-subs-and-wraps/i, {
+      timeout: config.navigationTimeoutMs
+    });
+
+    const body = this.page.locator('body');
+    await expect(body).toContainText(/subs|wraps|order ahead/i, {
+      timeout: config.actionTimeoutMs
+    });
+  }
+
   async clickVisualNavigationLink(linkLabel: string): Promise<void> {
     await this.dismissClubPopupIfPresent();
     const escaped = linkLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

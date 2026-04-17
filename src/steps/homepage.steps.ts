@@ -1,4 +1,4 @@
-import { Given, Then } from '@cucumber/cucumber';
+import { Given, Then, When } from '@cucumber/cucumber';
 
 import { HomePage } from '../pages/home-page';
 import type { CustomWorld } from '../support/world';
@@ -43,5 +43,24 @@ Then(
       firstButtonLabel,
       secondButtonLabel
     );
+  }
+);
+
+When('I open the cart from the homepage', async function (this: CustomWorld) {
+  if (!this.homePage) {
+    this.homePage = new HomePage(this.ensurePage());
+  }
+
+  await this.homePage.openCart();
+});
+
+Then(
+  'the empty cart message should be displayed',
+  async function (this: CustomWorld) {
+    if (!this.homePage) {
+      this.homePage = new HomePage(this.ensurePage());
+    }
+
+    await this.homePage.expectEmptyCartMessage();
   }
 );

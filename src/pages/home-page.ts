@@ -117,6 +117,25 @@ export class HomePage extends BasePage {
     });
   }
 
+  async openCart(): Promise<void> {
+    await this.dismissClubPopupIfPresent();
+    const cartButton = await locateWithFallback(this.page, {
+      testId: 'Cart-button',
+      role: 'button',
+      name: /^cart$/i,
+      css: '#userCart, button[data-qa-automation="Cart-button"]'
+    });
+
+    await this.clickSafe(cartButton);
+    await this.waitForStable();
+  }
+
+  async expectEmptyCartMessage(): Promise<void> {
+    await expect(this.page.getByText(/^Your cart is empty\.$/i)).toBeVisible({
+      timeout: config.actionTimeoutMs
+    });
+  }
+
   async dismissOneTrustIfPresent(): Promise<void> {
     const button = this.page.getByRole('button', { name: /accept/i });
     if ((await button.count()) > 0) {
